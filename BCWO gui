@@ -1,0 +1,67 @@
+local uilibrary = loadstring(game:HttpGet("https://raw.githubusercontent.com/Kiet1308/tvkhub/main/rac"))()
+local windowz = uilibrary:CreateWindow("Chos Hub", "BCWO", true)
+
+local Page1 = windowz:CreatePage("Main")
+
+
+local Section1 = Page1:CreateSection("Main")
+
+Section1:CreateToggle("Toggle AutoCannon", {Toggled=false , Description = false}, function(v)
+	getgenv().autospam=v
+	while autospam == true do wait()
+	local args = {
+    [1] = "fire",
+    [2] = {
+        [1] = Vector3.new(9.166204452514648, 10.211763381958008, -4.9307780265808105),
+        [2] = Vector3.new(3.50014066696167, 6.000038146972656, -1.0173134803771973),
+        [3] = 100
+	    }
+	}
+	 game:GetService("Players").LocalPlayer.Backpack["Equinox Cannon"].RemoteFunction:InvokeServer(unpack(args))
+	end
+end)
+
+Section1:CreateButton("Active Cannon", function ()
+local activecannon =  [[
+local UserInputService = game:GetService("UserInputService")
+local player = game:GetService("Players").LocalPlayer
+local mouse = player:GetMouse()
+
+local args = {
+    [1] = "fire",
+    [2] = {
+        [1] = Vector3.new(),
+        [2] = mouse.Hit.p,
+        [3] = 100
+    }
+}
+
+local shooting = false
+
+local function shoot()
+    if shooting then
+        local character = player.Character or player.CharacterAdded:Wait()
+        local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+        args[2][1] = humanoidRootPart.Position
+        args[2][2] = mouse.Hit.p
+        game:GetService("Players").LocalPlayer.Backpack["Equinox Cannon"].RemoteFunction:InvokeServer(unpack(args))
+        wait(0.01)
+        shoot()
+    end
+end
+
+UserInputService.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        shooting = true
+        shoot()
+    end
+end)
+
+UserInputService.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+        shooting = false
+    end
+end)
+]]
+loadstring(activecannon)()
+end)
