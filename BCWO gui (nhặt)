@@ -171,6 +171,36 @@ end
 end,
 })
 
+local Section2 = Tab_II:CreateSection("SummerEvent_Torment")
+local Toggle = Tab_I:CreateToggle({
+   Name = "Equinox Canon [AUTO_AIM + SHORT_COOLDOWN]",
+   CurrentValue = false,
+   Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+   while true do
+for _, Players in ipairs(game.Players:GetPlayers()) do
+for _, Enemies in ipairs(workspace:GetChildren()) do
+if Enemies.ClassName == "Model" and Enemies:FindFirstChild("EnemyMain") ~= nil and Enemies:FindFirstChild("Humanoid").Health > 1 then
+if Enemies:FindFirstChild("Torso") ~= nil then
+local args = {
+    [1] = "fire",
+    [2] = {
+        [1] = Vector3.new(46.88994598388672, 109.01049041748047, -261.3942565917969),
+        [2] = Enemies:FindFirstChild("Torso").Position,
+        [3] = 100
+    }
+}
+game:GetService("Players").LocalPlayer.Backpack:FindFirstChild("Equinox Cannon").RemoteFunction:InvokeServer(unpack(args))
+else repeat task.wait() until Enemies:FindFirstChild("Torso") ~= nil
+end
+end
+end
+end
+task.wait(0.005)
+end
+   end,
+})
+
 local Tab_III = Window:CreateTab("Mining")
 local Section = Tab_III:CreateSection("Stuffs")
 
