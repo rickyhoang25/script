@@ -33,15 +33,17 @@ local Toggle = Tab_I:CreateToggle({
    CurrentValue = false,
    Flag = "Toggle1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
    Callback = function(Value)
-   while true do
+   getgenv().AutoEqCannon = Value
+   while AutoEqCannon == true do
 for _, Players in ipairs(game.Players:GetPlayers()) do
 for _, Enemies in ipairs(workspace:GetChildren()) do
 if Enemies.ClassName == "Model" and Enemies:FindFirstChild("EnemyMain") ~= nil and Enemies:FindFirstChild("Humanoid").Health > 1 then
 if Enemies:FindFirstChild("Torso") ~= nil then
+local EnemyTorso = Enemies:FindFirstChild("Torso").Position * Vector3.new(0, 1, 0)
 local args = {
     [1] = "fire",
     [2] = {
-        [1] = game.Players.LocalPlayer.Character:FindFirstChild("Torso").Position,
+        [1] = EnemyTorso,
         [2] = Enemies:FindFirstChild("Torso").Position,
         [3] = 100
     }
@@ -181,7 +183,7 @@ local Toggle = Tab_II:CreateToggle({
    while auto_eq_cannon_summer_tor == true do
 for _, Players in ipairs(game.Players:GetPlayers()) do
 for _, Enemies in ipairs(workspace:GetChildren()) do
-if Enemies.ClassName == "Model" and Enemies:FindFirstChild("EnemyMain") ~= nil and Enemies:FindFirstChild("Humanoid").Health > 1 then
+if Enemies.ClassName == "Model" and Enemies:FindFirstChild("EnemyMain") ~= nil and Enemies:FindFirstChild("Humanoid").Health >= 1 then
 if Enemies:FindFirstChild("Torso") ~= nil then
 local args = {
     [1] = "fire",
