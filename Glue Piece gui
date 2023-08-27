@@ -135,38 +135,37 @@ islandtp:Dropdown("Select Island", ilist, function(bool)
 end)
 
 local shop = maintab:Channel("Shops")
-local ingameShop = game.workspace.Shop
 local shoplist = {"Awakening Book", "Black Leg", "OFA [Deku]", "Busoshoku", "Observation", "Random Fruity", "Reset Fruity", "Reset Stats", "Dual Sword", "Geppo", "Soru", "Epic Sword", "Saber", "Triple Katana" }
 shop:Dropdown("Select", shoplist, function(bool)
     local selectedshop = bool
     if selectedshop == "Awakening Book" then
-        hrp.CFrame = ingameshop.Awakening["Awakening Book"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop.Awakening["Awakening Book"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Black Leg" then
-        hrp.CFrame = ingameshop["Fighting Style"]["Black Leg"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Fighting Style"]["Black Leg"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "OFA [Deku]" then
-        hrp.CFrame = ingameshop["Fighting Style"]["OFA [Deku]"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Fighting Style"]["OFA [Deku]"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Busoshoku" then
-        hrp.CFrame = ingameshop["Haki"]["Busoshoku"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Haki"]["Busoshoku"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Observation" then
-        hrp.CFrame = ingameshop["Haki"]["Observation"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Haki"]["Observation"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Random Fruity" then
-        hrp.CFrame = ingameshop["Random Fruity"]["Random Fruity"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Random Fruity"]["Random Fruity"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Reset Fruity" then
-        hrp.CFrame = ingameshop["Reset"]["Reset Fruity"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Reset"]["Reset Fruity"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Reset Stats" then
-        hrp.CFrame = ingameshop["Reset"]["Reset Stats"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Reset"]["Reset Stats"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Dual Sword" then
-        hrp.CFrame = ingameshop["Special Weapon"]["Dual Sword"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Special Weapon"]["Dual Sword"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Geppo" then
-        hrp.CFrame = ingameshop["Technique"]["Geppo"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Technique"]["Geppo"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Soru" then
-        hrp.CFrame = ingameshop["Technique"]["Soru"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Technique"]["Soru"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Epic Sword" then
-        hrp.CFrame = ingameshop["Weapon"]["Epic Sword"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Weapon"]["Epic Sword"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Saber" then
-        hrp.CFrame = ingameshop["Weapon"]["Saber"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Weapon"]["Saber"].WorldPivot * CFrame.new(0, 2, 0)
     elseif selectedshop == "Triple Katana" then
-        hrp.CFrame = ingameshop["Weapon"]["Triple Katana"].WorldPivot * CFrame.new(0, 2, 0)
+        hrp.CFrame = game.workspace.Shop["Weapon"]["Triple Katana"].WorldPivot * CFrame.new(0, 2, 0)
     end
 end)
 
