@@ -1,0 +1,168 @@
+local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt")()
+
+local win = DiscordLib:Window("discord library")
+
+local serv = win:Server("Preview", "")
+
+local btns = serv:Channel("Buttons")
+
+btns:Button("Kill all", function()
+DiscordLib:Notification("Notification", "Killed everyone!", "Okay!")
+end)
+
+btns:Seperator()
+
+btns:Button("Get max level", function()
+DiscordLib:Notification("Notification", "Max level!", "Okay!")
+end)
+
+local tgls = serv:Channel("Toggles")
+
+tgls:Toggle("Auto-Farm",false, function(bool)
+print(bool)
+end)
+
+local sldrs = serv:Channel("Sliders")
+
+local sldr = sldrs:Slider("Slide me!", 0, 1000, 400, function(t)
+print(t)
+end)
+
+sldrs:Button("Change to 50", function()
+sldr:Change(50)
+end)
+
+local drops = serv:Channel("Dropdowns")
+
+
+local drop = drops:Dropdown("Pick me!",{"Option 1","Option 2","Option 3","Option 4","Option 5"}, function(bool)
+print(bool)
+end)
+
+drops:Button("Clear", function()
+drop:Clear()
+end)
+
+drops:Button("Add option", function()
+drop:Add("Option")
+end)
+
+local clrs = serv:Channel("Colorpickers")
+
+clrs:Colorpicker("ESP Color", Color3.fromRGB(255,1,1), function(t)
+print(t)
+end)
+
+local textbs = serv:Channel("Textboxes")
+
+textbs:Textbox("Gun power", "Type here!", true, function(t)
+print(t)
+end)
+
+local lbls = serv:Channel("Labels")
+
+lbls:Label("This is just a label.")
+
+local bnds = serv:Channel("Binds")
+
+bnds:Bind("Kill bind", Enum.KeyCode.RightShift, function()
+print("Killed everyone!")
+end)
+
+serv:Channel("by dawid#7205")
+
+
+local maintab = win:Server("Main", "http://www.roblox.com/asset/?id=6031075938")
+local plrtp = maintab:Channel("Players Teleport")
+	local plr = game.Players.LocalPlayer
+	local char = plr.Character or plr.Character:AddedWait()
+	local hrp = char.HumanoidRootPart
+	local plrlist = {}
+for i, v in pairs(game.Players:GetChildren()) do
+	table.insert(plrlist, v.Name)
+end
+plrtp:Dropdown("Players", plrlist, function(bool)
+	local selectedPlr = bool
+	for i, v in pairs(game.Workspace:GetChildren()) do
+		if v.Name == selectedPlr then
+			hrp.CFrame = game.Workspace:FindFirstChild(""..selectedPlr).HumanoidRootPart.CFrame
+		end
+	end
+end)
+
+local fruitfunc = maintab:Channel("Fruit Stuff")
+fruitfunc:Button("Collec dropped fruits", function()
+	for i, v in pairs(game.Workspace.Fruity:GetChildren()) do
+		if v:IsA("Part") then
+			firetouchinterest(hrp, v, 1)
+		end
+	end
+end)
+fruitfunc:Button("Collect all fruits", function()
+	for i, v in pairs(game.Workspace.Fruity:GetChildren()) do
+		if v:IsA("Part") then
+			hrp.CFrame = v.CFrame wait()
+		end
+	end
+end)
+local bosstp = maintab:Channel("Bosses Teleport")
+local bosseslist = {}
+for i,v in pairs(workspace.NPCs.Boss:GetChildren()) do
+	table.insert(bosseslist, v.Name)
+end
+bosstp:Dropdown("Select boss", bosseslist, function(bool)
+	local selectedBoss = bool
+	for i,v in pairs(workspace.NPCs.Boss:GetChildren()) do
+		if v.Name == selectedBoss then
+			hrp.CFrame = v.HumanoidRootPart.CFrame
+		end
+	end
+end)
+
+local islandtp = maintab:Channel("Island Tp")
+local ilist = {}
+for i,v in pairs(workspace.Map:GetChildren()) do
+	table.insert(ilist, v.Name)
+end
+islandtp:Dropdown("Select Island", ilist, function(bool)
+	for i,v in pairs(workspace.Map:GetChildren()) do
+		if bool == v.Name then
+			hrp.CFrame = v.WorldPivot * CFrame.new(0, 2, 0)
+		end
+	end
+end)
+
+local shop = maintab:Channel("Shops")
+local shoplist = {"Awakening Book", "Black Leg", "OFA [Deku]", "Busoshoku", "Observation", "Random Fruity", "Reset Fruity", "Reset Stats", "Dual Sword", "Geppo", "Soru", "Epic Sword", "Saber", "Triple Katana" }
+shop:Dropdown("Select", shoplist, function(bool)
+    local selectedshop = bool
+    if selectedshop == "Awakening Book" then
+        hrp.CFrame = game.workspace.Shop.Awakening["Awakening Book"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Black Leg" then
+        hrp.CFrame = game.workspace.Shop["Fighting Style"]["Black Leg"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "OFA [Deku]" then
+        hrp.CFrame = game.workspace.Shop["Fighting Style"]["OFA [Deku]"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Busoshoku" then
+        hrp.CFrame = game.workspace.Shop["Haki"]["Busoshoku"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Observation" then
+        hrp.CFrame = game.workspace.Shop["Haki"]["Observation"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Random Fruity" then
+        hrp.CFrame = game.workspace.Shop["Random Fruity"]["Random Fruity"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Reset Fruity" then
+        hrp.CFrame = game.workspace.Shop["Reset"]["Reset Fruity"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Reset Stats" then
+        hrp.CFrame = game.workspace.Shop["Reset"]["Reset Stats"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Dual Sword" then
+        hrp.CFrame = game.workspace.Shop["Special Weapon"]["Dual Sword"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Geppo" then
+        hrp.CFrame = game.workspace.Shop["Technique"]["Geppo"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Soru" then
+        hrp.CFrame = game.workspace.Shop["Technique"]["Soru"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Epic Sword" then
+        hrp.CFrame = game.workspace.Shop["Weapon"]["Epic Sword"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Saber" then
+        hrp.CFrame = game.workspace.Shop["Weapon"]["Saber"].WorldPivot * CFrame.new(0, 2, 0)
+    elseif selectedshop == "Triple Katana" then
+        hrp.CFrame = game.workspace.Shop["Weapon"]["Triple Katana"].WorldPivot * CFrame.new(0, 2, 0)
+    end
+end)
