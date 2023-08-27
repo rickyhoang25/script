@@ -76,9 +76,7 @@ serv:Channel("by dawid#7205")
 
 local maintab = win:Server("Main", "http://www.roblox.com/asset/?id=6031075938")
 local plrtp = maintab:Channel("Players Teleport")
-	local plr = game.Players.LocalPlayer
-	local char = plr.Character or plr.Character:AddedWait()
-	local hrp = char.HumanoidRootPart
+    local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
 	local plrlist = {}
 for i, v in pairs(game.Players:GetChildren()) do
 	table.insert(plrlist, v.Name)
@@ -168,4 +166,21 @@ shop:Dropdown("Select", shoplist, function(bool)
         hrp.CFrame = game.workspace.Shop["Weapon"]["Triple Katana"].WorldPivot * CFrame.new(0, 2, 0)
     end
 end)
+
+local toggle = maintab:Channel("Toggles")
+
+toggle:Toggle("Auto",false, function(v)
+    getgenv().auto =  v
+    while auto == true do wait()
+        for i,v in pairs(workspace.NPCs.Boss:GetChildren()) do
+            if v:IsA("Model") then
+                local args = {[1] = "Slash",[2] = {[1] = v:WaitForChild("Humanoid")}}
+                game:GetService("Players").LocalPlayer.Backpack.Youru.Remote.Weapon_Event:FireServer(unpack(args))
+            end
+        end
+    end
+end)
+
+
+
 
