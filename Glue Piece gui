@@ -76,12 +76,14 @@ serv:Channel("by dawid#7205")
 
 local maintab = win:Server("Main", "http://www.roblox.com/asset/?id=6031075938")
 local plrtp = maintab:Channel("Players Teleport")
-    local hrp = game.Players.LocalPlayer.Character.HumanoidRootPart
-	local plrlist = {}
+local plr = game.Players.LocalPlayer
+local plrlist = {}
 for i, v in pairs(game.Players:GetChildren()) do
 	table.insert(plrlist, v.Name)
 end
 plrtp:Dropdown("Players", plrlist, function(bool)
+    local char = plr.Character
+    local hrp = char:WaitForChild("HumanoidRootPart")
 	local selectedPlr = bool
 	for i, v in pairs(game.Workspace:GetChildren()) do
 		if v.Name == selectedPlr then
@@ -111,6 +113,8 @@ for i,v in pairs(workspace.NPCs.Boss:GetChildren()) do
 	table.insert(bosseslist, v.Name)
 end
 bosstp:Dropdown("Select boss", bosseslist, function(bool)
+    local char = plr.Character
+    local hrp = char:WaitForChild("HumanoidRootPart")
 	local selectedBoss = bool
 	for i,v in pairs(workspace.NPCs.Boss:GetChildren()) do
 		if v.Name == selectedBoss then
@@ -125,6 +129,8 @@ for i,v in pairs(workspace.Map:GetChildren()) do
 	table.insert(ilist, v.Name)
 end
 islandtp:Dropdown("Select Island", ilist, function(bool)
+    local char = plr.Character
+    local hrp = char:WaitForChild("HumanoidRootPart")
 	for i,v in pairs(workspace.Map:GetChildren()) do
 		if bool == v.Name then
 			hrp.CFrame = v.WorldPivot * CFrame.new(0, 2, 0)
@@ -135,6 +141,8 @@ end)
 local shop = maintab:Channel("Shops")
 local shoplist = {"Awakening Book", "Black Leg", "OFA [Deku]", "Busoshoku", "Observation", "Random Fruity", "Reset Fruity", "Reset Stats", "Dual Sword", "Geppo", "Soru", "Epic Sword", "Saber", "Triple Katana" }
 shop:Dropdown("Select", shoplist, function(bool)
+    local char = plr.Character
+    local hrp = char:WaitForChild("HumanoidRootPart")
     local selectedshop = bool
     if selectedshop == "Awakening Book" then
         hrp.CFrame = game.workspace.Shop.Awakening["Awakening Book"].WorldPivot * CFrame.new(0, 2, 0)
@@ -169,18 +177,44 @@ end)
 
 local toggle = maintab:Channel("Toggles")
 
-toggle:Toggle("Auto",false, function(v)
+toggle:Toggle("Auto Youru",false, function(v)
+    local char = plr.Character
+    local hrp = char.HumanoidRootPart
     getgenv().auto =  v
-    while auto == true do wait()
-        for i,v in pairs(workspace.NPCs.Boss:GetChildren()) do
-            if v:IsA("Model") then
-                local args = {[1] = "Slash",[2] = {[1] = v:WaitForChild("Humanoid")}}
-                game:GetService("Players").LocalPlayer.Backpack.Youru.Remote.Weapon_Event:FireServer(unpack(args))
+    spawn(function ()
+        while auto == true do wait()
+            for i,v in pairs(workspace.NPCs.Boss:GetChildren()) do
+                if v:IsA("Model") then
+                    local args = {[1] = "Slash",[2] = {[1] = v:WaitForChild("Humanoid")}}
+                    game:GetService("Players").LocalPlayer.Character.Youru.Remote.Weapon_Event:FireServer(unpack(args))
+                end
             end
         end
-    end
+    end)
 end)
 
-
-
+toggle:Toggle("Auto teleBoss",false, function (v)
+    getgenv().auto = v
+        while auto == true do wait()
+            local char = plr.Character
+            local hrp = char.HumanoidRootPart
+            char.Humanoid:EquipTool(plr.Backpack["Youru"])        
+            for i, bossesModel in pairs(workspace.NPCs.Boss:GetChildren()) do
+                if bossesModel:IsA("Model") then
+                    for i,bossChildren in pairs(bossesModel:GetChildren()) do
+                        if bossChildren.Name == "HumanoidRootPart" and bossChildren.Parent:IsA("Model") then wait()
+                            while true do wait()
+                                hrp.CFrame = bossChildren.CFrame 
+                                local args = {[1] = "Slash",[2] = {[1] = bossesModel:WaitForChild("Humanoid")}}
+                                game:GetService("Players").LocalPlayer.Character.Youru.Remote.Weapon_Event:FireServer(unpack(args))
+                                if bossesModel.Humanoid.Health == 0 or auto == false then
+                                    break
+                                end
+                            end    
+                        end
+                    end
+                end
+            end
+        end
+    end)
 
