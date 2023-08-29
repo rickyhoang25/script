@@ -94,6 +94,8 @@ end)
 
 local fruitfunc = maintab:Channel("Fruit Stuff")
 fruitfunc:Button("Collec dropped fruits", function()
+    local char = plr.Character
+    local hrp = char:WaitForChild("HumanoidRootPart")
 	for i, v in pairs(game.Workspace.Fruity:GetChildren()) do
 		if v:IsA("Part") then
 			firetouchinterest(hrp, v, 1)
@@ -101,6 +103,8 @@ fruitfunc:Button("Collec dropped fruits", function()
 	end
 end)
 fruitfunc:Button("Collect all fruits", function()
+    local char = plr.Character
+    local hrp = char:WaitForChild("HumanoidRootPart")
 	for i, v in pairs(game.Workspace.Fruity:GetChildren()) do
 		if v:IsA("Part") then
 			hrp.CFrame = v.CFrame wait()
@@ -177,44 +181,53 @@ end)
 
 local toggle = maintab:Channel("Toggles")
 
-toggle:Toggle("Auto Youru",false, function(v)
-    local char = plr.Character
-    local hrp = char.HumanoidRootPart
-    getgenv().auto =  v
-    spawn(function ()
-        while auto == true do wait()
-            for i,v in pairs(workspace.NPCs.Boss:GetChildren()) do
-                if v:IsA("Model") then
-                    local args = {[1] = "Slash",[2] = {[1] = v:WaitForChild("Humanoid")}}
-                    game:GetService("Players").LocalPlayer.Character.Youru.Remote.Weapon_Event:FireServer(unpack(args))
-                end
-            end
+local weaponsTable = {}
+for i,v in pairs(plr.Backpack:GetChildren()) do
+    if v:IsA("Tool") then
+        table.insert(weaponsTable, v.Name)
+    end
+end
+local selectedWeap = nil
+toggle:Dropdown("Choose weapon", weaponsTable, function (bool)
+    for i, weap in pairs(plr.Backpack:GetChildren()) do
+        if bool == weap.Name then
+            selectedWeap = bool
         end
-    end)
+    end
 end)
+toggle:Toggle("Auto equip", false, function(v)
+    getgenv().autoEquip = v 
+    while autoEquip == true do wait()
+        local char = plr.Character or plr.Character:AddedWait()
+        char.Humanoid:EquipTool(plr.Backpack:FindFirstChild(""..selectedWeap))    
+    end
+end) 
+
 
 toggle:Toggle("Auto teleBoss",false, function (v)
     getgenv().auto = v
-        while auto == true do wait()
-            local char = plr.Character
-            local hrp = char.HumanoidRootPart
-            char.Humanoid:EquipTool(plr.Backpack["Youru"])        
-            for i, bossesModel in pairs(workspace.NPCs.Boss:GetChildren()) do
-                if bossesModel:IsA("Model") then
-                    for i,bossChildren in pairs(bossesModel:GetChildren()) do
-                        if bossChildren.Name == "HumanoidRootPart" and bossChildren.Parent:IsA("Model") then wait()
-                            while true do wait()
-                                hrp.CFrame = bossChildren.CFrame 
-                                local args = {[1] = "Slash",[2] = {[1] = bossesModel:WaitForChild("Humanoid")}}
-                                game:GetService("Players").LocalPlayer.Character.Youru.Remote.Weapon_Event:FireServer(unpack(args))
-                                if bossesModel.Humanoid.Health == 0 or auto == false then
-                                    break
+        while auto == true do 
+                    local char = plr.Character or plr.Character:AddedWait()
+                    local hrp = char.HumanoidRootPart
+                        for i, bossesModel in pairs(workspace.NPCs.Boss:GetChildren()) do
+                            if bossesModel:IsA("Model") then wait()
+                                --if bossesModel.Name ~= "Nooby" and bossesModel.Name ~= "Unknown Boss" then
+                                for i,bossChildren in pairs(bossesModel:GetChildren()) do
+                                    if bossChildren.Name == "HumanoidRootPart" then wait()
+                                        if plr.Character.Humanoid.Health ~= 0 then
+                                            repeat
+                                                hrp.CFrame = bossChildren.CFrame 
+                                                local args = {[1] = "Slash",[2] = {[1] = bossesModel:WaitForChild("Humanoid")}}
+                                                game:GetService("Players").LocalPlayer.Character[""..selectedWeap].Remote.Weapon_Event:FireServer(unpack(args))
+                                                wait()
+                                            until bossesModel.Humanoid.Health == 0 or plr.Character.Humanoid.Health == 0
+                                        end                    
+                                    end
                                 end
-                            end    
+                            --end
+                            end
                         end
-                    end
-                end
-            end
+                    wait(8)
         end
-    end)
+end)
 
