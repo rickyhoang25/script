@@ -197,37 +197,46 @@ toggle:Dropdown("Choose weapon", weaponsTable, function (bool)
 end)
 toggle:Toggle("Auto equip", false, function(v)
     getgenv().autoEquip = v 
-    while autoEquip == true do wait()
-        local char = plr.Character or plr.Character:AddedWait()
-        char.Humanoid:EquipTool(plr.Backpack:FindFirstChild(""..selectedWeap))    
-    end
+        while autoEquip == true do wait()
+            spawn(function () wait()
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(plr.Backpack:FindFirstChild(""..selectedWeap))
+            end)
+        end    
 end) 
 
 
 toggle:Toggle("Auto teleBoss",false, function (v)
     getgenv().auto = v
-        while auto == true do 
-                    local char = plr.Character or plr.Character:AddedWait()
-                    local hrp = char.HumanoidRootPart
-                        for i, bossesModel in pairs(workspace.NPCs.Boss:GetChildren()) do
-                            if bossesModel:IsA("Model") then wait()
-                                --if bossesModel.Name ~= "Nooby" and bossesModel.Name ~= "Unknown Boss" then
-                                for i,bossChildren in pairs(bossesModel:GetChildren()) do
-                                    if bossChildren.Name == "HumanoidRootPart" then wait()
-                                        if plr.Character.Humanoid.Health ~= 0 then
-                                            repeat
-                                                hrp.CFrame = bossChildren.CFrame 
-                                                local args = {[1] = "Slash",[2] = {[1] = bossesModel:WaitForChild("Humanoid")}}
-                                                game:GetService("Players").LocalPlayer.Character[""..selectedWeap].Remote.Weapon_Event:FireServer(unpack(args))
-                                                wait()
-                                            until bossesModel.Humanoid.Health == 0 or plr.Character.Humanoid.Health == 0
-                                        end                    
+    spawn(function ()
+        while auto == true do wait()
+            local char = plr.Character or plr.Character:AddedWait()
+            local hrp = char.HumanoidRootPart
+                    for i, bossesModel in pairs(workspace.NPCs.Boss:GetChildren()) do wait()
+                        if bossesModel ~= nil then wait()
+                                if bossesModel:IsA("Model") then wait()
+                                    --if bossesModel.Name ~= "Nooby" and bossesModel.Name ~= "Unknown Boss" then
+                                    for i,bossHRP in pairs(bossesModel:GetChildren()) do wait()
+                                        if bossHRP.Name == "HumanoidRootPart" then wait()
+                                            if plr.Character.Humanoid.Health ~= 0 then wait()
+                                                if bossesModel:FindFirstChild("Humanoid").Health ~= 0 then wait()
+                                                    repeat
+                                                        hrp.CFrame = bossHRP.CFrame 
+                                                        local args = {[1] = "Slash",[2] = {[1] = bossesModel:WaitForChild("Humanoid")}}
+                                                        game:GetService("Players").LocalPlayer.Character[""..selectedWeap].Remote.Weapon_Event:FireServer(unpack(args))
+                                                        wait()
+                                                    until bossesModel.Humanoid.Health == 0 or plr.Character.Humanoid.Health == 0 or auto == false
+                                                else wait()
+                                                end
+                                            end                    
+                                        end
                                     end
-                                end
-                            --end
-                            end
+                                --end
+                                end         
+                        else wait(1) 
                         end
-                    wait(8)
+                    end       
+            if plr.Character.Humanoid.Health == 0 then wait(7.5) else wait() end
         end
+    end)
 end)
 
