@@ -1,6 +1,6 @@
 local DiscordLib = loadstring(game:HttpGet"https://raw.githubusercontent.com/dawid-scripts/UI-Libs/main/discord%20lib.txt")()
 
-local win = DiscordLib:Window("discord library")
+local win = DiscordLib:Window("discord library - Chos Hub")
 
 local serv = win:Server("Preview", "")
 
@@ -78,9 +78,9 @@ local maintab = win:Server("Main", "http://www.roblox.com/asset/?id=6031075938")
 local plrtp = maintab:Channel("Players Teleport")
 local plr = game.Players.LocalPlayer
 local plrlist = {}
-for i, v in pairs(game.Players:GetChildren()) do
-	table.insert(plrlist, v.Name)
-end
+        for i, v in pairs(game.Players:GetChildren()) do
+            table.insert(plrlist, v.Name)
+        end        
 plrtp:Dropdown("Players", plrlist, function(bool)
     local char = plr.Character
     local hrp = char:WaitForChild("HumanoidRootPart")
@@ -93,23 +93,36 @@ plrtp:Dropdown("Players", plrlist, function(bool)
 end)
 
 local fruitfunc = maintab:Channel("Fruit Stuff")
-fruitfunc:Button("Collec dropped fruits", function()
-    local char = plr.Character
-    local hrp = char:WaitForChild("HumanoidRootPart")
-	for i, v in pairs(game.Workspace.Fruity:GetChildren()) do
-		if v:IsA("Part") then
-			firetouchinterest(hrp, v, 1)
-		end
-	end
+fruitfunc:Toggle("Collec dropped fruits(not tele to fruit)", false, function(v)
+    getgenv().autoGetDroppedFruit = v
+    while autoGetDroppedFruit == true do wait(.1)
+        local char = plr.Character
+        local hrp = char:WaitForChild("HumanoidRootPart")
+        spawn(function () wait(.1)
+            for i, v in pairs(game.Workspace.Fruity:GetChildren()) do
+                if v:IsA("Part") then
+                    firetouchinterest(hrp, v, 1)
+                end
+            end    
+        end)
+    end
 end)
-fruitfunc:Button("Collect all fruits", function()
-    local char = plr.Character
-    local hrp = char:WaitForChild("HumanoidRootPart")
-	for i, v in pairs(game.Workspace.Fruity:GetChildren()) do
-		if v:IsA("Part") then
-			hrp.CFrame = v.CFrame wait()
-		end
-	end
+fruitfunc:Toggle("Collect all fruits", false, function(v)
+    getgenv().autoFruit = v
+    while autoFruit == true do wait(.1)
+        local char = plr.Character
+        local hrp = char:WaitForChild("HumanoidRootPart")
+        spawn(function ()
+            for i, fruits in pairs(game.Workspace.Fruity:GetChildren()) do wait(.1)
+                if fruits ~= nil then wait(.1)
+                    if fruits:IsA("Part") then wait(.1)
+                        repeat wait(.1) hrp.CFrame = fruits.CFrame until char.Backpack[""..fruits] or autoFruit == false
+                    end
+                else wait(.1)
+                end
+            end    
+        end)
+    end
 end)
 local bosstp = maintab:Channel("Bosses Teleport")
 local bosseslist = {}
@@ -197,9 +210,12 @@ toggle:Dropdown("Choose weapon", weaponsTable, function (bool) --a dropdown to g
 end)
 toggle:Toggle("Auto equip", false, function(v)
     getgenv().autoEquip = v 
-        while autoEquip == true do wait()
-            spawn(function () wait()
+        while autoEquip == true do wait(.1)
+            spawn(function () wait(.1)
+                if plr.Backpack:FindFirstChild(""..selectedWeap) then wait(.1)
                 game.Players.LocalPlayer.Character.Humanoid:EquipTool(plr.Backpack:FindFirstChild(""..selectedWeap)) --keep equiping selected weapon non-stop
+                else wait()
+                end
             end)
         end    
 end) 
@@ -207,14 +223,13 @@ end)
 
 toggle:Toggle("Auto teleBoss",false, function (v)
     getgenv().auto = v --toggle value
-    spawn(function ()
         while auto == true do wait() --loop start when toggle on
             local char = plr.Character or plr.Character:AddedWait()
             local hrp = char.HumanoidRootPart --add and set shortcut
                     for i, bossesModel in pairs(workspace.NPCs.Boss:GetChildren()) do wait() --get children in boos folder
                         if bossesModel ~= nil then wait() --check if it emty or nah
                                 if bossesModel:IsA("Model") then wait() --check if boss got is model or nah
-                                    if bossesModel.Name ~= "Nooby" and bossesModel.Name ~= "Unknown Boss" then
+                                    --if bossesModel.Name ~= "Nooby" and bossesModel.Name ~= "Unknown Boss" then
                                     for i,bossHRP in pairs(bossesModel:GetChildren()) do wait() --get children in model of selected boss
                                         if bossHRP.Name == "HumanoidRootPart" then wait() --check if get HRP of it or not
                                             if plr.Character.Humanoid.Health ~= 0 then wait() --check character health
@@ -230,13 +245,11 @@ toggle:Toggle("Auto teleBoss",false, function (v)
                                             end                    
                                         end
                                     end
-                                end
+                                --end
                                 end         
                         else wait(1) --if boss folder is emty then wait 1 sec then continue
                         end
                     end       
-            if plr.Character.Humanoid.Health == 0 then wait(7.5) else wait() end --check character health
+            if plr.Character.Humanoid.Health == 0 then wait(7) else wait() end --check character health
         end
-    end)
 end)
-
