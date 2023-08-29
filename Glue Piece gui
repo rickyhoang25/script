@@ -188,7 +188,7 @@ for i,v in pairs(plr.Backpack:GetChildren()) do
     end
 end
 local selectedWeap = nil
-toggle:Dropdown("Choose weapon", weaponsTable, function (bool)
+toggle:Dropdown("Choose weapon", weaponsTable, function (bool) --a dropdown to get weapon list
     for i, weap in pairs(plr.Backpack:GetChildren()) do
         if bool == weap.Name then
             selectedWeap = bool
@@ -199,43 +199,43 @@ toggle:Toggle("Auto equip", false, function(v)
     getgenv().autoEquip = v 
         while autoEquip == true do wait()
             spawn(function () wait()
-                game.Players.LocalPlayer.Character.Humanoid:EquipTool(plr.Backpack:FindFirstChild(""..selectedWeap))
+                game.Players.LocalPlayer.Character.Humanoid:EquipTool(plr.Backpack:FindFirstChild(""..selectedWeap)) --keep equiping selected weapon non-stop
             end)
         end    
 end) 
 
 
 toggle:Toggle("Auto teleBoss",false, function (v)
-    getgenv().auto = v
+    getgenv().auto = v --toggle value
     spawn(function ()
-        while auto == true do wait()
+        while auto == true do wait() --loop start when toggle on
             local char = plr.Character or plr.Character:AddedWait()
-            local hrp = char.HumanoidRootPart
-                    for i, bossesModel in pairs(workspace.NPCs.Boss:GetChildren()) do wait()
-                        if bossesModel ~= nil then wait()
-                                if bossesModel:IsA("Model") then wait()
-                                    --if bossesModel.Name ~= "Nooby" and bossesModel.Name ~= "Unknown Boss" then
-                                    for i,bossHRP in pairs(bossesModel:GetChildren()) do wait()
-                                        if bossHRP.Name == "HumanoidRootPart" then wait()
-                                            if plr.Character.Humanoid.Health ~= 0 then wait()
-                                                if bossesModel:FindFirstChild("Humanoid").Health ~= 0 then wait()
-                                                    repeat
+            local hrp = char.HumanoidRootPart --add and set shortcut
+                    for i, bossesModel in pairs(workspace.NPCs.Boss:GetChildren()) do wait() --get children in boos folder
+                        if bossesModel ~= nil then wait() --check if it emty or nah
+                                if bossesModel:IsA("Model") then wait() --check if boss got is model or nah
+                                    if bossesModel.Name ~= "Nooby" and bossesModel.Name ~= "Unknown Boss" then
+                                    for i,bossHRP in pairs(bossesModel:GetChildren()) do wait() --get children in model of selected boss
+                                        if bossHRP.Name == "HumanoidRootPart" then wait() --check if get HRP of it or not
+                                            if plr.Character.Humanoid.Health ~= 0 then wait() --check character health
+                                                if bossesModel:FindFirstChild("Humanoid").Health ~= 0 then wait() --check if Humanoid of boss is exist or not
+                                                    repeat --looping tele to boss and "slash" it
                                                         hrp.CFrame = bossHRP.CFrame 
                                                         local args = {[1] = "Slash",[2] = {[1] = bossesModel:WaitForChild("Humanoid")}}
                                                         game:GetService("Players").LocalPlayer.Character[""..selectedWeap].Remote.Weapon_Event:FireServer(unpack(args))
                                                         wait()
-                                                    until bossesModel.Humanoid.Health == 0 or plr.Character.Humanoid.Health == 0 or auto == false
-                                                else wait()
+                                                    until bossesModel.Humanoid.Health == 0 or plr.Character.Humanoid.Health == 0 or auto == false --the conditions to stop this loop
+                                                else wait() --if it not exist then it will continue
                                                 end
                                             end                    
                                         end
                                     end
-                                --end
+                                end
                                 end         
-                        else wait(1) 
+                        else wait(1) --if boss folder is emty then wait 1 sec then continue
                         end
                     end       
-            if plr.Character.Humanoid.Health == 0 then wait(7.5) else wait() end
+            if plr.Character.Humanoid.Health == 0 then wait(7.5) else wait() end --check character health
         end
     end)
 end)
