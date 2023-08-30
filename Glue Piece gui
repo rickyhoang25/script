@@ -245,7 +245,7 @@ toggle:Toggle("Auto teleBoss",false, function (v)
                                     end
                                 --end
                                 end         
-                        else wait(1) --if boss folder is emty then wait 1 sec then continue
+                        else repeat wait() until bossesModel~=nil --if boss folder is emty then wait 1 sec then continue
                         end
                     end       
             if plr.Character.Humanoid.Health == 0 then wait(7) else wait() end --check character health
