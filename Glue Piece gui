@@ -211,12 +211,10 @@ end)
 toggle:Toggle("Auto equip", false, function(v)
     getgenv().autoEquip = v 
         while autoEquip == true do wait(.1)
-            spawn(function () wait(.1)
-                if plr.Backpack:FindFirstChild(""..selectedWeap) then wait(.1)
+                if plr:FindFirstChild("Backpack"):FindFirstChild(""..selectedWeap) then wait(.1)
                 game.Players.LocalPlayer.Character.Humanoid:EquipTool(plr.Backpack:FindFirstChild(""..selectedWeap)) --keep equiping selected weapon non-stop
                 else wait()
                 end
-            end)
         end    
 end) 
 
